@@ -1,6 +1,6 @@
 @font-face {
 	font-family: Bebas;
-	src: url('../fonts/Bebas-Regular.ttf');
+	src: url('./fonts/Bebas-Regular.ttf');
 }
 
 .background{
