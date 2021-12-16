@@ -57,55 +57,26 @@
 }
 
 .header {
-    width: 100%; 
-    height: 400px;
-    background-image: url('media/images/IMG_0647.jpg');
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    background-position: 50% 50%;
-    background-size:cover;
-    border-radius: 10px;
-    position: relative;
-    overflow:hidden;
-}
-
-.header h2{
-    font-weight: bold;
+    height: auto;
     font-family: Bebas;
+}
+.header h2{
     letter-spacing: 2px;
     font-size:40px;
-    position: absolute;
-    left: 4%;
-    bottom: 4%;
-    color: #ffffff;
-    text-shadow: 2px 2px 2px #000000;
+    color: #000000;
+    margin-left: 2%;
+    text-align: left;
+}
+.header p{
+    text-align: left;
+    margin-left:2%;
+}
+.header iframe{
+    width: 9%8;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
 }
 
-.column-container{
-    display:flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-}
-.column {
-    height: 20%;
-    width: 45%;
-    font-family: Bebas;
-    letter-spacing: 1px;
-}
-.column img{
-    height:100%;
-    width:auto;
-    border:#FAF9F6;
-    border-radius: 10px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-.column h3 p{
-    width: 100%;
-    text-align: center;
-}
 
 .footer{
     font-family: Bebas;

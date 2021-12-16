@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" href="design.css">
+        <title>C106A Fall 2021 Project</title>
+    </head>
+    <body class="background">
+        <div class="wrap"> 
+            <div class="nav">
+                <div class="title"> 
+                    <a href="index.html">Surgery Robot</a>
+                </div>
+                <div class="navbar"> 
+                    <a href="design.html">DESIGN</a>
+                    <a href="implementation.html">IMPLEMENTATION</a>
+                    <a href="demo.html">DEMO</a>
+                    <a href="conclusion.html">CONCLUSION</a>
+                    <a href="team.html">TEAM</a>
+                    <a href="resources.html">RESOURCES</a>
+                </div>
+            </div>
+            <div class="content"> 
+                <div class="header"> 
+                    <h2> Our Problem </h2>
+                    <ol>
+                        <li>
+                            <h3>Hardware (Actuation)</h3>
+                            <ul>
+                                <li>Gripper</li>
+                                <li>Needle</li>
+                                <li>Patient Model</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <h3>Computer Vision (Sensing)</h3>
+                            <ul>
+                                <li>Image Segmentation</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <h3>Path Planning (Planning, Actuation)</h3>
+                            <ul>
+                                <li>Selecting entry points by publishing PointCloud and generating exit points</li>
+                                <li>6 Step Computation per stitch</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+                <hr>
+                <div class="content-box">
+                    <h2><u>Gripper Design Criteria</u></h2>
+                    <h3>There are two important specifications for our grippers:</h3>
+                    <ul>
+                        <li>Being able to hold the needle firmly without slipping when suturing </li>
+                        <li>Being compatible with Baxter's end-effector </li>
+                    </ul>
+                    <h3>To meet these specifications, we made the following choices:</h3>
+                    <ul>
+                        <li>Install sponges to the grippers to enhance Baxter's gripping dexterity</li>
+                        <li>Create a series of horizatal hot glue traces on the sponage to secure the needle</li>
+                        <li>Use another sponge to sandwich Baxter's grip to securely attach to the end-effector</li>
+                    </ul>
+                    <h3>Gripper Design Tradeoffs:</h3>
+                    <ul>
+                        <li>Increasing the width of the gripper decreased the angles of attack when Baxter needs to regrip the needle</li>
+                        <li>Gripper relies on a parallel trajectory or will fail if the needle is not at the right angle</li>
+                    </ul>
+                </div>
+                <div class="content-box">
+                    <h2><u>Needle Design Criteria</u></h2>
+                    <P>The needle used for suturing had several criteria throughout the course of this project. 
+                        For a circle trajectory, we needed a curved needle, while we needed a linear needle for a linear trajectory. 
+                        Both needles should be slim enough and have a taper on one end to pierce our wound phantom.</P>
+                    <h3> Needle Design Tradeoffs</h3>
+                    <ul> 
+                        <li>A straight needle constrains the suture path to be linear, making planning much simpler</li>
+                        <li>Choosing a thick, straight needle required the patient to be scaled to the needle's length</li>
+                    </ul>
+                </div>
+                <div class="content-box">
+                    <h2><u>Patient Design Process</u></h2>
+                    <div class="column-containter">
+                        <div class="column">
+                            <h3>Patient Prototype 1</h3>
+                            <p>We used cotton to stuff the patient’s wound, so the flesh is elevated from the base and Baxter can insert the needle without hitting the table. 
+                                However, the cotton is often moved when the needle goes through leading to changes in the wound shape and challenges in adjusting the motion. </p>
+                        </div>
+                        <div class="column">
+                            <h3>Patient Prototype 2</h3>
+                            <p>We used string and needles as a scaffold to hold the flesh straight-up, so it would be easier for Baxter to suture with the needle. 
+                                This model ensures the wound shape will not be affected during the suturing process. However, this prototype is fragile. 
+                                Every time when Baxter accidentally hit the scaffold, we had to reconstruct the model.</p>
+                        </div>
+                        <div class="column">
+                            <h3>Patient Final Prototype</h3>
+                            <p>We finally decided to use cardboard as our scaffold by folding it into a triangular shape. 
+                                We hollowed the middle portion for the needle to go through. 
+                                This model is more too maintained and has less variation. </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-box">
+                    <h2><u>Computer Vision</u></h2>
+                    <div class="block-box">
+                        <h3> RealSense Camera</h3>
+                        <p>Our project used the Intel Realsense Depth Camera D435i to collect pointcoulds so that we can direct Baxter to move to a specific point in space. 
+                            Realsense can be easily integrated with any projects by cloning the GitHub repository. 
+                            Added as one of the packages to our project, we can build it with other packages such as vision and planning. 
+                            All the nodes necessary for our project could easily be started by running the Realsense Camera launch file. 
+                            Although, in the default launch file setting, pointclouds were disabled and we had to enable in the launch file to complete our project. 
+                            After running the launch file, topics such as RGB Image, Pointcloud, and Camera Info are publish on the appropriate topics.</p>
+                    </div>
+                    <div class="block-box">
+                        <h3>AR Tags</h3>
+                        <p>The fact that we were using a separate camera (not integrated with Baxter) meant that we had to account for the rigid body transformation of the Realsense frame and Baxter’s frame. 
+                            AR tags to create relative frames to localize the wound. 
+                            We used the AR Tracking package from lab4 and modified it for our purpose. 
+                            We then set-up a Static Transform Publisher to connect Baxter’s base to the AR Marker. 
+                            This required calibration to precisely find the rigid body transformation (the Euler matrix and the translation vector). 
+                            Viewing the pointcloud on RVIZ was a very handy tool when trying to get the calibration exact. 
+                            With AR tags on our patient or background, Baxter can detect the wound in its field of view and be reliably analyzed and segmented, without being bound to the range of an AR tag's visibility from the camera.</p>
+                    </div>
+                    <div class="block-box">
+                        <h3>Image Segmentaion</h3>
+                        <p>Image segmentation was a big part of the vision section of our project. 
+                            We used k-means image segmentation technique to first segment the working area. 
+                            The patient was setup on a black background so that it can be easily identified. 
+                            Projecting pointclouds on a segmented image was used to filtering out unwanted points when working on a specific section of the image. 
+                            After identifying the workspace, the vision part of our project will discretize the wound area of the patient into 3 - 5 sections perpendicularly to the wound. 
+                            Then we will send the center of each section to Baxter to execute a suture. 
+                            This will be done for each discrete section in order to close the wound.</p>
+                    </div>
+                </div>
+                <div class="content-box">
+                    <h2><u>Path Planning</u></h2>
+                    <p>We originally planned to have a circular trajectory to reflect on actual clinical standards, but this requires an end-effector to undergo a curvature constrained kinematics. 
+                        The algorithms for circular path planning involve breaking up the trajectory into discretized time intervals in which the end-effector moves forward and rotates slightly by fixed amounts. 
+                        With a limited amount of time, we decided to have a trade-off by doing linear trajectory for this project instead. </p>
+                    <p>The computation for path planning is simplified to the following steps (as shown in the pictures below):</p>
+                    <ol>
+                        <li><b>Entry Position (Left gripper):</b> 
+                            After getting the image of the wound, we published starting point using PointCloud on Rviz. 
+                            Baxter will go to the approach pose, which is the entry point for the suturing.</li>
+                        <li><b>Poke motion (Left gripper):</b> 
+                            After Baxter arrives at its entry point it executes the poking motion and inserts the needle into the wound.</li>
+                        <li><b>Rest Position (Left gripper):</b> 
+                            Left gripper will release the needle and go to its rest position.</li>
+                        <li><b>Exit Position (Right gripper):</b> 
+                            The right gripper will then arrive at the exit position that is calculated.</li>
+                        <li><b>Exit motion (Right gripper):</b> 
+                            The right gripper will grip the needle and pull it out from the would.</li>
+                        <li><b>Rest Position (Right gripper):</b> 
+                            Right gripper will carry the needle to its rest position.</li>
+                        <li><b>Switch Hand motion (Right and Left gripper):</b> 
+                            Left gripper will take the needle from the right gripper, and calculate for the next suture entry point.</li>
+                        <li><b>Repeat:</b> 
+                            The needle will get completely pulled out of the patient until the string is out or after all sutures are performed</li>
+                    </ol> 
+                </div>
+                <div class="content-box">
+                    <h2><u>A Summary</u></h2>
+                    <h3>Hardware</h3>
+                    <ul>
+                        <li>Using a straight needle instead of a curved needle</li>
+                        <li>Scaled-up patient</li>
+                    </ul>
+                    <h3>Computer Vision</h3>
+                    <ul>
+                        <li>Have the wound with a uniform width across</li>
+                        <li>Publish first entry point</li>
+                        <li>Give a preset suture spacing and suture depth</li>
+                    </ul>
+                    <h3>Path Planning</h3>
+                    <ul>
+                        <li>Assume Baxter is holding the needle initially</li>
+                        <li>Repeating a straight trajectory path</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="footer">
+                <h3>EE106A Final Project Fall 2021<h3>
+            </div>
+        </div>
+    </body>
+</html>

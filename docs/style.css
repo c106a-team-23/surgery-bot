@@ -60,7 +60,6 @@
     width: 100%; 
     height: 400px;
     background-image: url('media/images/IMG_0647.jpg');
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     background-position: 50% 50%;
     background-size:cover;
     border-radius: 10px;
@@ -79,7 +78,6 @@
     color: #ffffff;
     text-shadow: 2px 2px 2px #000000;
 }
-
 .column-container{
     display:flex;
     flex-direction: row;
@@ -94,13 +92,11 @@
 .column img{
     height:100%;
     width:auto;
-    border:#FAF9F6;
     border-radius: 10px;
     display: block;
     margin-left: auto;
     margin-right: auto;
     width: 90%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .column h3 p{
     width: 100%;

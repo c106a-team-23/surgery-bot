@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="conclusion.css">
+    <title>C106A Fall 2021 Project</title>
+  </head>
+  <body class="background">
+    <div class="wrap">
+      <div class="nav">
+        <div class="title"> 
+          <a href="index.html">Surgery Robot</a>
+        </div>
+        <div class="navbar"> 
+          <a href="design.html">DESIGN</a>
+          <a href="implementation.html">IMPLEMENTATION</a>
+          <a href="demo.html">DEMO</a>
+          <a href="conclusion.html">CONCLUSION</a>
+          <a href="team.html">TEAM</a>
+          <a href="resources.html">RESOURCES</a>
+        </div>
+      </div>
+      <div class="content"> 
+        <div class="header"> 
+            <h2>DISCUSSION OF RESULTS AND DESIGN CRITERIA</h2>
+            <p>
+                Our measure of success ended up being Baxter accomplishing one stitch at the correct locations and correct right and left arms coordination. 
+                This measure was chosen through many trials and observing that after one stitch was made, various problems began to emerge that inevitably showed through in the second suture almost every time. 
+                For example, no motion path could be found and Baxter eventually killed itself. 
+                Overall, we're proud of where our project is right now. 
+                Several simplifications had to be made to create a result similar to the intended one, but we have some ideas of improvements that would get us closer to our original goal in creating an automated surgical robot that would ease the demand of surgeons.
+            </p>
+        </div>
+        <div class="content-box">
+            <h2><u>Future Direction</u></h2>
+            <ul> 
+                <li>Implementing computer vision with image segmenting to pick up needles instead of handing needles to Baxter.</li>
+                <li>Find a better way to <b>integrate Realsense vision</b> to Baxter, since it would enhance the path planning loop a lot. </li>
+                <li>Implementing a <b>circular trajectory</b>, as is done in real suturing.</li>
+            </ul>
+        </div>
+        <div class="content-box">
+            <h2><u>Challenges Encoutered</u></h2>
+            <ol>
+                <li><b>ABORTED: NO MOTION PLAN FOUND</b>
+                    <p>This error also frustrated us a lot along with our progress and Baxter also doesn’t like doing suturing rather killed itself every time we tested. 
+                        We tried manually publishing points from PointCloud in RViz and minimized our motion constraints. </p>
+                </li>
+                <li><b>Revisions with Vision and Image Segmentation</b>
+                    <p>K-means segmenation did not perform well.</p>
+                </li>
+                <li><b>Error Type Placement</b></li>
+                <li><b>AR Tag on Table, Camera Repositioning</b></li>
+                <li><b>Calibration (Baxter frame, Realsense frame, tf... etc)</b></li>
+                <li><b>Integrating and Designing with Baxter</b></li>
+            </ol>
+        <div ></div>
+      </div>
+      <hr>
+      <div class="footer">
+        <h3>EE106A Final Project Fall 2021</h3>
+    </div>
+  </body>
+</html>
