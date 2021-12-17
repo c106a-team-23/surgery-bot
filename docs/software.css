@@ -60,6 +60,7 @@
     width: 100%; 
     height: auto;
     font-family: Bebas;
+    margin: 0 auto;
 }
 .header h2{
     letter-spacing: 2px;
@@ -93,7 +94,6 @@
 .column-container .column{
     width: 48%;
 }
-
 .content-box{
     font-family: Bebas;
     letter-spacing: 0.5px;
@@ -112,7 +112,7 @@
     width: 50%;
 }
 .column img{
-    width:90%;
+    width:200px;
     border-radius: 5px;
     float:none;
     object-fit: cover;
@@ -122,6 +122,12 @@
     overflow: hidden;
     border: 5px solid #ffffff;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.column h4{
+    text-align: center;
+}
+.column p{
+    text-align: center;
 }
 .column p{
     margin-left: 2%;

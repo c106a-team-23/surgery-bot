@@ -32,7 +32,7 @@
             </div>
             <div class="column">
               <h4>Vision Package</h4>
-              <p>Contains code to project Realsense camera's pointcloud ONto Baxter's base frame and image segmentation code</p>
+              <p>Contains code to project Realsense camera's pointcloud onto Baxter's base frame and image segmentation code</p>
             </div>
           </div>
         </div>
@@ -43,7 +43,14 @@
               <img src="media/images/flow chart.png">
             </div>
             <div class="column">
-              <p>To start up </p>
+              <p>To start up the Surgery Robot, run_planning.launch and run_vision.launch is run. 
+                These launch files start up the necessary nodes such as the trajectory action server and the Realsense camera.
+              </p>
+              <p>After the required nodes are up, suture.py is run.</p>
+              <p>The robot proceeds to calibrate its grippers and ask the user to place the needle into its grip and to ready the patient in its workspace.</p>
+              <p>The robot then assumes its rest position and ask the user for the number of sutures the user would like the robot to perform.</p>
+              <p>The user then selects the desired points of entry in RVIZ using the Publish Point Tool.</p>
+              <p>The the robot proceeds to suture.</p>
             </div>
           </div>
           <br>
@@ -59,7 +66,20 @@
               </div>
             </div>
             <div class="column">
-
+              <p>To generate the suture trajectories, 6 key poses are used.
+                These poses are grouped into 2 set: entry and exit.</p>
+              <p>The entry set consists of the entry, insert, and release poses.
+                The entry pose defines the pose of before the needle is inserted into the patient.
+                The insert pose defines the pose of needle insertion.
+                The release pose defines the intermediary pose before the robot returns its rest pose.
+                These pose are used exclusively by the left gripper.</p>
+              <p>The exit set consists of the entry, insert, and release poses.
+                The grip pose defines the pose for the gripper to interact with the needle.
+                The exit pose defines the pose where the needle completely exits the patient.
+                The return pose defines the intermediary pose before the robot returns its rest pose.
+                These pose are used exclusively by the right gripper.</p>
+              <p>The rest pose the robot assumes is used to hand over the needle before performing the next suture.
+                This a sideways pose was chosen to provide more clearance since the Baxter wrist are quite large.</p>
             </div>
           </div>
           <br>
