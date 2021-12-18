@@ -8,8 +8,9 @@
 
 ## How to use:
 ### Run launch files first
--roslaunch vision run_vision.launch
--roslaunch planning xxxxx.launch
+1-roslaunch planning run_planning.launch
+2-roslaunch vision run_vision.launch
+3-suture.py
 
 ## Packages
 ### Vision
