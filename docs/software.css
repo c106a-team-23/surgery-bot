@@ -133,6 +133,44 @@
 .column p{
     margin-left: 2%;
 }
+.content-box p{
+    text-align: center;
+}
+.content-box img{
+    overflow: hidden;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    border: 5px solid #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.img-box{
+    font-family: Bebas;
+    letter-spacing: 0.5px;
+    background-color: #ffffff;
+    padding: 5px;
+    border-radius: 10px;
+    float:none;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.img-box img{
+    width:80%;
+    border-radius: 10px;
+    float:none;
+    object-fit: cover;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    border: 5px solid #ffffff;
+}
 
 .suture-photos img{
     overflow: hidden;

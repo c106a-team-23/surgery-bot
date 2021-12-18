@@ -86,12 +86,48 @@
         </div>
         <div class="content-box">
           <h3>Vision</h3>
-          <div class="column-container">
-            <div class="column">
-              
+            <img src="media/images/vision_flow.PNG">
+            <p>The vision component of our software includes running two launch files.</p>
+            <ul>
+              <li>The rs_camera.launch is a custumized version of the realsense rs_camera.launch. 
+                This starts the realsense nodes and starts sending messages through different topics such as RGB, Pointcloud...etc.</li>
+              <li>The ar_track_realsense.launch file integrates lab 4 (AR Tracking) with a realsense camera. 
+                This launch file takes care of the frame transformation between realsense and baxter frame after calibration.</li>
+            </ul>
+            <p>After these launch files are run, running main.py will add additional topics such as \segmented_workspace which is a segmented image of the surgery robots workspace. 
+              This will get rid of unnecessary noise and only keep the patient model and the table.</p>
+            <div class="img-box">
+              <p>Raw Image</p>
+              <img src="media/images/Screenshot_at_2021-12-13_18_33_51.png">
             </div>
+            <div class="img-box">
+              <p>Segmented Image</p>
+              <img src="media/images/Screenshot_at_2021-12-13_18_33_14.png">
+            </div>
+
             <br>
-          </div>
+            <hr>
+            <br>
+            <p>Note: After the presentation, we built a CNN model for image segmentation. 
+              Despite our limited training data set, we were able to get by relatively well. 
+              However, we were not able to test out our CNN model live due to the unavailability of the torchvision on lab computers.</p>
+            <p>We strongly believe this model has the potential to get a more reliable segmented pointcloud in Rviz.</p>
+            <div class="img-box">
+              <p>Ground Truth</p>
+              <img src="media/images/ground_truth.png">
+            </div>
+            <div class="img-box">
+              <p>Predicted by our CNN model. Edge artifacts, perhaps due to lack of thousands of training images. </p>
+              <img src="media/images/prediction.png">
+            </div>
+            <div class="img-box">
+              <p>Canny edge detection</p>
+              <img src="media/images/canny_edge.jpg">
+            </div>
+            <div class="img-box">
+              <p>Prediction subtracted with Gaussian blurred edges gives a very good final segmentation.</p>
+              <img src="media/images/blurred_prediction.jpg">
+            </div>
         </div>
       </div>
       <div class="link">
