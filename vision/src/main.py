@@ -33,6 +33,12 @@ from cv_bridge import CvBridge
 from image_segmentation import segment_image, discretize, show_image
 from pointcloud_segmentation import segment_pointcloud
 
+# for CNN Model
+import torch
+import torchvision
+import torch.nn as nn  
+import torch.optim as optim 
+from unet import UNET  
 
 def get_camera_matrix(camera_info_msg):
     # TODO: Return the camera intrinsic matrix as a 3x3 numpy array
@@ -40,6 +46,16 @@ def get_camera_matrix(camera_info_msg):
     # Hint: numpy.reshape may be useful here.
     return np.reshape(camera_info_msg.K, (3, 3))
 
+def load_checkpoint(checkpoint, model):
+    print("=> Loading checkpoint")
+    model.load_state_dict(checkpoint["state_dict"])
+    
+def segment_patient(model, image):
+    model.eval()
+    with torch.no_grad():
+        segmented_patient = torch.sigmoid(model(image))
+        segmented_patient = (segmented_patient > 0.5).float()
+    return segmented_patient
 
 def isolate_object_of_interest(points, image, cam_matrix, trans, rot):
     segmented_image = segment_image(image)
@@ -140,7 +156,7 @@ class PointcloudProcess:
         self.num_steps += 1
         self.messages.appendleft((points, rgb_image, intrinsic_matrix))
 
-    def publish_once_from_queue(self):
+    def publish_once_from_queue(self, model=None):
         if self.messages:
             points, image, info = self.messages.pop()
 
@@ -156,31 +172,42 @@ class PointcloudProcess:
                     tf.ExtrapolationException):
                 return
 
+            #1. This segments the work area; including table and patient
             work_area = isolate_working_space(image)
-            temp = cv2.cvtColor(work_area, cv2.COLOR_GRAY2RGB)
-
-            # print(work_area)
-            # show_image(temp*image)
-            msg = self._bridge.cv2_to_imgmsg(temp*image, "rgb8")
-
+            #2. This makes the work area rgb
+            work_area_rgb = cv2.cvtColor(work_area, cv2.COLOR_GRAY2RGB)
+            #3. This publishes the segmented work_area
+            msg = self._bridge.cv2_to_imgmsg(work_area_rgb*image, "rgb8")
             self.seg_image_pub.publish(msg)
-            points = segment_pointcloud(points, work_area, info, np.array(trans), np.array(rot))
-            points = isolate_object_of_interest(points, temp, info, 
-                np.array(trans), np.array(rot))
-            points_msg = numpy_to_pc2_msg(points)
+
+            #4. This gets the work area -> segments patient using CNN and publishes pointclouds. 
+            # This helps in ridding of noisy environment and will display only the patient and table
+            # on Rviz.
+            workspace_points = segment_pointcloud(points, work_area, info, np.array(trans), np.array(rot))
+            points_msg = numpy_to_pc2_msg(workspace_points)
             self.points_pub.publish(points_msg)
+
+            #5. Now from the workspace segment patient using the CNN model <commented out>
+            # patient = segment_patient(model, work_area)
+            # patient_points = segment_pointcloud(points, patient, info, np.array(trans), np.array(rot))
+            # points_msg = numpy_to_pc2_msg(patient_points)
+            # didn't publish this
+
+            # Update
             print("Published segmented pointcloud at timestamp:",
                    points_msg.header.stamp.secs)
+            
+            # This publishes poking point on a topic. Planner can either use 
+            # this or use the publish_tool on Rviz
+            
             poking_point, section = isolate_section(points, image, info, 
                 np.array(trans), np.array(rot))
-            # print(section)
+
             if section is not None:
                 section_msg = numpy_to_pc2_msg(section)
                 self.section_pub.publish(section_msg)
 
             if poking_point is not None:
-                # print(poking_point)
-                # print(section[0])
                 p_point = Vector3()
                 p_point.x = poking_point[0]
                 p_point.y = poking_point[1]
@@ -199,11 +226,17 @@ def main():
     process = PointcloudProcess(POINTS_TOPIC, RGB_IMAGE_TOPIC,
                                 CAM_INFO_TOPIC, POINTS_PUB_TOPIC,
                                 POKE_POSITION_TOPIC)
-    # r = rospy.Rate(1000)
+    
+    # we saw a good result for this but did get to test it on the lab machines 
+    # because of torchvision and shortage of time. But we strongly beleive incorporating a 
+    # CNN image segmenation model would be helpful
+    model = UNET(in_channels=3, out_channels=1)
+    # load_checkpoint(torch.load("my_checkpoint.pth.tar"), model)
+    # model.eval()
+
     r = rospy.Rate(100)
-    # print('hello')
     while not rospy.is_shutdown():
-        process.publish_once_from_queue()
+        process.publish_once_from_queue(model)
         r.sleep()
 
 if __name__ == '__main__':
