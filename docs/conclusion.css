@@ -90,6 +90,9 @@
 .content-box ol{
     text-align: left;
 }
+.content-box p{
+    margin-left:2%;
+}
 
 
 .footer{
