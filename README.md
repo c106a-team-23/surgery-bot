@@ -3,7 +3,7 @@
 ## How to clone:
 - mkdir surgery_bot
 - cd into workspace
-- git clone git@github.com:leonardwei2023/surgery-bot.git src
+- git clone https://github.com/c106a-team-23/surgery-bot.git src
 - run catkin_make
 
 ## How to use:
