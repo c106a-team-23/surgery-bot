@@ -7,16 +7,14 @@
 - run catkin_make
 
 ## How to use:
-roslaunch planning TBD
+### Run launch files first
+-roslaunch vision run_vision.launch
+-roslaunch planning xxxxx.launch
 
 ## Packages
-### Vision:
-roslaunch realsense2_camera rs_camera.launch -> to bringup the realsense camera
-#### Topics:
-/vision/closure (Publisher)
-#### Services:
-/vision/getEntryPoint (Server)
+### Vision
+### Planning
+### Realsense-ros
+### ar_track_alvar
+### Staple
 
-### Planning:
-##### Services:
-/planning/beginSuture
